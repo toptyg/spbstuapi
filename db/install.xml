@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/spbstuapi/db" VERSION="20200317" COMMENT="XMLDB file for Moodle local/spbstuapi"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="spbstuapi_ext_courses" COMMENT="External courses tracking information">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="external_id" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="external_catid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Requested external category ID"/>
+        <FIELD NAME="internal_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Internal ID of tracked course"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="spbstuapi_ext_courses_uq" TYPE="unique" FIELDS="external_id" COMMENT="External id unique key"/>
+        <KEY NAME="spbstuapi_ext_course_fk" TYPE="foreign" FIELDS="internal_id" REFTABLE="course" REFFIELDS="id" COMMENT="Internal course id"/>
+        <KEY NAME="spbstuapi_ext_courses_fc" TYPE="foreign" FIELDS="external_catid" REFTABLE="spbstuapi_ext_cats" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="spbstuapi_ext_cats" COMMENT="Categories for external courses">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="category_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Internal category ID"/>
+        <FIELD NAME="allowed_root" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="spbstuapi_ext_cats_fu" TYPE="foreign-unique" FIELDS="category_id" REFTABLE="course_categories" REFFIELDS="id" COMMENT="Foreign key for categories"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
